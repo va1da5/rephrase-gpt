@@ -8,8 +8,3 @@ export type Settings = {
   temperature: number;
   apiKey: string;
 };
-
-export type Message = {
-  role: string;
-  content: string;
-};
