@@ -76,7 +76,7 @@ export const formats = [
   },
 ];
 
-export const actions = ["Rephrase", "Summarize", "Explain"];
+export const actions = ["Rephrase", "Summarize", "Explain", "None"];
 
 export const characters = [
   "None",

@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaRobot, FaUser } from "react-icons/fa";
 
 import { Button, Input } from "antd";
-import { Configuration, OpenAIApi } from "openai";
+import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
 
 import Sidebar from "./Sidebar";
 import useLocalStorage from "beautiful-react-hooks/useLocalStorage";
 import { Message, Settings } from "./types";
+import { useHotkeys } from "react-hotkeys-hook";
 
 const { TextArea } = Input;
 
@@ -22,6 +23,8 @@ function App() {
     apiKey: "",
   });
 
+  const bottomDiv = useRef<HTMLDivElement>(null);
+
   const [loading, setLoading] = useState(false);
 
   const [messages, setMessages] = useState<Message[]>([]);
@@ -29,7 +32,7 @@ function App() {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    const welcome = `Hello! How can I assist you today?`;
+    const welcome = `Hello! How may I assist you today?`;
     const missingApiKey =
       "Hello, please provide OpenAI API key before starting to use the tool";
 
@@ -40,6 +43,11 @@ function App() {
       },
     ]);
   }, []);
+
+  const scrollToNew = () => {
+    if (bottomDiv.current)
+      bottomDiv.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   const getQueryContext = () => {
     let output = `${settings?.action} the text below`;
@@ -70,6 +78,8 @@ function App() {
   };
 
   const handleSend = async () => {
+    if (!query.length) return;
+
     const configuration = new Configuration({
       apiKey: settings?.apiKey,
     });
@@ -80,21 +90,27 @@ function App() {
       return [...current, { role: "user", content: query }];
     });
 
+    scrollToNew();
+
+    const messages: ChatCompletionRequestMessage[] = [];
+
+    if (settings?.action !== "None")
+      messages.push({
+        role: "system",
+        content: getQueryContext(),
+      });
+
+    messages.push({
+      role: "user",
+      content: query,
+    });
+
     setLoading(true);
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       max_tokens: 3000,
       temperature: 1.5,
-      messages: [
-        {
-          role: "system",
-          content: getQueryContext(),
-        },
-        {
-          role: "user",
-          content: query,
-        },
-      ],
+      messages,
     });
 
     setLoading(false);
@@ -108,7 +124,11 @@ function App() {
         },
       ];
     });
+
+    setTimeout(scrollToNew, 500);
   };
+
+  useHotkeys("ctrl+enter", handleSend);
 
   return (
     <div className="relative flex w-full">
@@ -127,17 +147,21 @@ function App() {
                     </div>
                     <div className="w-full">
                       <div className="prose prose-sm dark:prose-invert max-w-full">
-                        {message.content.split("\n").map((content, index) => (
-                          <p key={index}>{content}</p>
-                        ))}
-
-                        <p></p>
+                        {message.content.split("\n").map(
+                          (content, index) =>
+                            content.length > 0 && (
+                              <p key={index} className="my-5">
+                                {content}
+                              </p>
+                            )
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
               );
             })}
+            <div ref={bottomDiv} />
           </div>
         </div>
         <div className="fixed bottom-0 left-0 right-0 z-30 ml-72 bg-white pb-5 pt-5 transition-all duration-300 dark:bg-zinc-800">
@@ -146,7 +170,7 @@ function App() {
               <TextArea
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Your text goes here..."
+                placeholder="Your query goes here..."
                 autoSize
               />
               <Button

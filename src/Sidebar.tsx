@@ -1,4 +1,3 @@
-import React from "react";
 import { useState } from "react";
 
 import { TbInfoCircleFilled } from "react-icons/tb";
@@ -14,7 +13,6 @@ import {
   Badge,
   InputNumber,
   Slider,
-  Tooltip,
 } from "antd";
 
 import { styles, tones, formats, actions, characters } from "./values";
@@ -51,6 +49,7 @@ export default function Sidebar({ settings, setSettings }: Props) {
             }}
             options={styles.map((value) => ({ label: value, value }))}
             value={settings.style}
+            disabled={settings.action == "None"}
           />
           <p className="mt-3">Language Tone</p>
           <Select
@@ -66,6 +65,7 @@ export default function Sidebar({ settings, setSettings }: Props) {
             }}
             options={tones.map((value) => ({ label: value, value }))}
             value={settings.tone}
+            disabled={settings.action == "None"}
           />
           <p className="mt-3">Imitate Character</p>
           <Select
@@ -77,6 +77,7 @@ export default function Sidebar({ settings, setSettings }: Props) {
             }}
             options={characters.map((value) => ({ label: value, value }))}
             value={settings.character}
+            disabled={settings.action == "None"}
           />
           <p className="mt-3">Output Format</p>
           <Select
@@ -88,6 +89,7 @@ export default function Sidebar({ settings, setSettings }: Props) {
             }}
             options={formats}
             value={settings.format}
+            disabled={settings.action == "None"}
           />
           <p className="mt-3">Action</p>
           <Select
