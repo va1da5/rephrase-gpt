@@ -119,7 +119,7 @@ function App() {
       return [
         ...current,
         {
-          role: completion?.data?.choices[0]?.message?.role || "",
+          role: completion?.data?.choices[0]?.message?.role || "assistant",
           content: completion?.data?.choices[0]?.message?.content || "",
         },
       ];
@@ -128,7 +128,7 @@ function App() {
     setTimeout(scrollToNew, 500);
   };
 
-  useHotkeys("ctrl+enter", handleSend);
+  useHotkeys("shift+enter", handleSend);
 
   return (
     <div className="relative flex w-full">
