@@ -17,7 +17,7 @@ const Markdown = ({ children }: { children: string }) => {
           return !inline ? (
             <SyntaxHighlighter
               children={String(children).replace(/\n$/, "")}
-              style={darkCodeStyle}
+              style={darkCodeStyle as any}
               language={match ? match[1] : "text"}
               PreTag="div"
               {...props}
