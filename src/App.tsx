@@ -50,7 +50,9 @@ function App() {
   };
 
   const getQueryContext = () => {
-    let output = `${settings?.action} the text below`;
+    let output = `${settings?.action.toLocaleLowerCase()} ${
+      settings?.action == "Fix Grammar" ? "to" : ""
+    } the following content`;
 
     if (settings?.style?.length) {
       output += ` ${

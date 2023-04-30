@@ -1,5 +1,6 @@
 import { ChatCompletionRequestMessage } from "openai";
 import { FaRobot, FaUser } from "react-icons/fa";
+import Markdown from "./Markdown";
 
 type Props = {
   message: ChatCompletionRequestMessage;
@@ -16,14 +17,7 @@ export default function Message({ message }: Props) {
         </div>
         <div className="w-full">
           <div className="prose prose-sm dark:prose-invert max-w-full">
-            {message.content.split("\n").map(
-              (content, index) =>
-                content.length > 0 && (
-                  <p key={index} className="my-5 first:mt-1 last:mb-0">
-                    {content}
-                  </p>
-                )
-            )}
+            <Markdown children={message.content} />
           </div>
         </div>
       </div>

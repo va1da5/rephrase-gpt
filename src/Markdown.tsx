@@ -1,0 +1,39 @@
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark as darkCodeStyle } from "react-syntax-highlighter/dist/cjs/styles/prism";
+
+const Markdown = ({ children }: { children: string }) => {
+  return (
+    <ReactMarkdown
+      children={children}
+      remarkPlugins={[remarkGfm]}
+      components={{
+        p: ({ children }) => (
+          <p className="my-5 first:mt-1 last:mb-0">{children}</p>
+        ),
+        code: ({ node, inline, className, children, ...props }) => {
+          const match = /language-(\w+)/.exec(className || "");
+          return !inline ? (
+            <SyntaxHighlighter
+              children={String(children).replace(/\n$/, "")}
+              style={darkCodeStyle}
+              language={match ? match[1] : "text"}
+              PreTag="div"
+              {...props}
+            />
+          ) : (
+            <code
+              {...props}
+              className="rounded-md bg-zinc-100 p-1 font-mono text-sm text-red-600"
+            >
+              {children}
+            </code>
+          );
+        },
+      }}
+    />
+  );
+};
+
+export default Markdown;
