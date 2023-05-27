@@ -3,6 +3,7 @@ export const styles = [
   "Analytical",
   "Argumentative",
   "Business",
+  "Casual",
   "Conversational",
   "Creative",
   "Critical",
@@ -77,7 +78,8 @@ export const formats = [
 ];
 
 export const actions = [
-  "Rephrase",
+  "Paraphrase",
+  "Rewrite",
   "Summarize",
   "Explain",
   "Fix Grammar",
@@ -86,12 +88,18 @@ export const actions = [
 
 export const characters = [
   "None",
-  "Michael Scott",
-  "Ron Swanson",
   "Alfie Solomons",
-  "Barney Stinson",
-  "Homer Simpson",
+  "April Ludgate",
+  "Bertram Gilfoyle",
   "Captain Holt",
-  "Peter Griffin",
   "Eric Cartman",
+  "Gregory House",
+  "Logan Roy",
+  "Michael Scott",
+  "Noho Hank",
+  "Peter Griffin",
+  "Rick Sanchez",
+  "Ron Swanson",
+  "Ted Lasso",
+  "Tom Wambsgans",
 ];
