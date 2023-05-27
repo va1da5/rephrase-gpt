@@ -2,12 +2,14 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark as darkCodeStyle } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import rehypeRaw from "rehype-raw";
 
 const Markdown = ({ children }: { children: string }) => {
   return (
     <ReactMarkdown
       children={children}
       remarkPlugins={[remarkGfm]}
+      rehypePlugins={[rehypeRaw]}
       components={{
         p: ({ children }) => (
           <p className="my-5 first:mt-1 last:mb-0">{children}</p>
