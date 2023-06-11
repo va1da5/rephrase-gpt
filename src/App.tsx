@@ -132,7 +132,7 @@ function App() {
       });
 
       setTimeout(scrollToNew, 500);
-    } catch (e) {
+    } catch (e: any) {
       console.log(e.response.data);
       messageApi.open({
         type: "error",

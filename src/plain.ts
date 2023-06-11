@@ -1,4 +1,4 @@
-function stripFormatting(text: string) {
+export function stripFormatting(text: string) {
   var tempDiv = document.createElement("div");
   tempDiv.innerHTML = text;
   return tempDiv.textContent || tempDiv.innerText;
