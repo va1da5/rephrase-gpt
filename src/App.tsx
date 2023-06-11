@@ -165,7 +165,7 @@ function App() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Your query goes here..."
-                autoSize
+                autoSize={{ minRows: 1, maxRows: 6 }}
               />
               <Button
                 type="primary"
