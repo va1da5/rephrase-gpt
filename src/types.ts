@@ -1,4 +1,5 @@
 export type Settings = {
+  model: string;
   style: string[];
   tone: string[];
   format: string;

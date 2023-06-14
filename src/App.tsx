@@ -15,6 +15,7 @@ const { TextArea } = Input;
 function App() {
   const [messageApi, contextHolder] = message.useMessage();
   const [settings, setSettings] = useLocalStorage<Settings>("__settings", {
+    model: "gpt-3.5-turbo",
     style: [],
     tone: [],
     format: "default",
@@ -113,9 +114,9 @@ function App() {
 
     try {
       const completion = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
+        model: settings?.model as string,
         max_tokens: 3000,
-        temperature: 1.5,
+        temperature: settings?.temperature,
         messages,
       });
 

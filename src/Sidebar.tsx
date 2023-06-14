@@ -15,7 +15,7 @@ import {
   Slider,
 } from "antd";
 
-import { styles, tones, formats, actions, characters } from "./values";
+import { styles, tones, formats, actions, characters, models } from "./values";
 import { Settings } from "./types";
 
 type Props = {
@@ -35,6 +35,18 @@ export default function Sidebar({ settings, setSettings }: Props) {
 
       <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
         <Space style={{ width: "100%" }} direction="vertical">
+          <p>GPT Model</p>
+          <Select
+            style={{ width: "100%" }}
+            placeholder="Please select"
+            onChange={(update: string) => {
+              setSettings((current: Settings) => {
+                return { ...current, model: update };
+              });
+            }}
+            options={models.map((value) => ({ label: value, value }))}
+            value={settings.model}
+          />
           <p>Language Style</p>
           <Select
             mode="multiple"
