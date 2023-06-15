@@ -8,8 +8,17 @@ import { useHotkeys } from "react-hotkeys-hook";
 import Message from "./Message";
 import Sidebar from "./Sidebar";
 import { Settings } from "./types";
+import { HotkeyCallback } from "react-hotkeys-hook/dist/types";
 
 const { TextArea } = Input;
+
+const registerHotKey = (key: string, fn: HotkeyCallback) => {
+  return useHotkeys(key, fn, {
+    enabled: true,
+    preventDefault: true,
+    enableOnFormTags: ["input", "textarea"],
+  });
+};
 
 function App() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -143,7 +152,11 @@ function App() {
     }
   };
 
-  useHotkeys("shift+enter", handleSend);
+  registerHotKey("shift+enter", handleSend);
+  registerHotKey("ctrl+l", () => setMessages([]));
+  registerHotKey("shift+delete", () => {
+    setQuery("");
+  });
 
   return (
     <>
