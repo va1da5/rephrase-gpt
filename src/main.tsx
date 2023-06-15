@@ -11,3 +11,11 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     </StyleProvider>
   </React.StrictMode>
 );
+
+document.addEventListener("copy", (event: ClipboardEvent) => {
+  const selection = document.getSelection();
+  if (!selection) return;
+
+  event?.clipboardData?.setData("text/plain", selection.toString());
+  event.preventDefault();
+});

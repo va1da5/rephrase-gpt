@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 
 import { Button, Input, message } from "antd";
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
-import "./plain";
 
 import useLocalStorage from "beautiful-react-hooks/useLocalStorage";
 import { useHotkeys } from "react-hotkeys-hook";
