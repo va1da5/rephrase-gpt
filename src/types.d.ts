@@ -9,3 +9,8 @@ export type Settings = {
   temperature: number;
   apiKey: string;
 };
+
+export type ChatMessage = {
+  role: string;
+  content: string;
+};

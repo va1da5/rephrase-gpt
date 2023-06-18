@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 
 import { Button, Input, message } from "antd";
-import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
+
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
 
 import useLocalStorage from "beautiful-react-hooks/useLocalStorage";
 import { useHotkeys } from "react-hotkeys-hook";
 import Message from "./Message";
 import Sidebar from "./Sidebar";
-import { Settings } from "./types";
+import { ChatMessage, Settings } from "./types";
 import { HotkeyCallback } from "react-hotkeys-hook/dist/types";
 
 const { TextArea } = Input;
@@ -38,7 +40,7 @@ function App() {
 
   const [loading, setLoading] = useState(false);
 
-  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   const [query, setQuery] = useState("");
 
@@ -90,14 +92,31 @@ function App() {
     return (output += ".");
   };
 
+  const handleLLMNewToken = (token: string) => {
+    setMessages((current) => {
+      const lastMessage = current.at(-1) as ChatMessage;
+
+      return [
+        ...current.slice(0, current.length - 1),
+        {
+          ...lastMessage,
+          content: lastMessage?.content + token,
+        },
+      ];
+    });
+  };
+
   const handleSend = async () => {
     if (!query.length) return;
 
-    const configuration = new Configuration({
-      apiKey: settings?.apiKey,
+    const chat = new ChatOpenAI({
+      openAIApiKey: settings?.apiKey,
+      temperature: settings?.temperature,
+      maxTokens: settings?.maxTokens,
+      modelName: settings?.model as string,
+      streaming: true,
+      callbacks: [{ handleLLMNewToken }],
     });
-
-    const openai = new OpenAIApi(configuration);
 
     setMessages((current) => {
       return [...current, { role: "user", content: query }];
@@ -105,47 +124,48 @@ function App() {
 
     scrollToNew();
 
-    const messages: ChatCompletionRequestMessage[] = [];
-
-    if (settings?.action !== "None")
-      messages.push({
-        role: "system",
-        content: getQueryContext(),
-      });
-
-    messages.push({
-      role: "user",
-      content: query,
-    });
-
     setLoading(true);
 
     try {
-      const completion = await openai.createChatCompletion({
-        model: settings?.model as string,
-        max_tokens: 3000,
-        temperature: settings?.temperature,
-        messages,
+      setMessages((current) => {
+        return [
+          ...current,
+          {
+            role: "assistant",
+            content: "",
+          },
+        ];
       });
+
+      const response = await chat.call([
+        new SystemChatMessage(
+          settings?.action === "None" ? "" : getQueryContext()
+        ),
+        new HumanChatMessage(query),
+      ]);
 
       setLoading(false);
 
       setMessages((current) => {
         return [
-          ...current,
+          ...current.slice(0, current.length - 1),
           {
-            role: completion?.data?.choices[0]?.message?.role || "assistant",
-            content: completion?.data?.choices[0]?.message?.content || "",
+            role: "assistant",
+            content: response.text,
           },
         ];
       });
 
       setTimeout(scrollToNew, 500);
-    } catch (e: any) {
-      console.log(e.response.data);
+    } catch (error: any) {
+      console.error(error.response.data.error);
       messageApi.open({
         type: "error",
-        content: e.response.data.error.message,
+        content: error.response.data.error.message,
+      });
+
+      setMessages((current) => {
+        return [...current.slice(0, current.length - 1)];
       });
       setLoading(false);
       return;
@@ -167,12 +187,16 @@ function App() {
         <div className="relative ml-72 w-full">
           <div className="relative z-20 mx-auto max-w-4xl pb-[158px] pt-10 transition-all">
             <div className="py-8">
-              {messages.map((message, index) => (
-                <Message key={index} message={message} />
-              ))}
+              {messages
+                .filter(
+                  (message) => message.content && message.content?.length > 0
+                )
+                .map((message, index) => (
+                  <Message key={index} message={message} />
+                ))}
 
               <div ref={bottomDiv} className="my-10 flex justify-center">
-                {messages.length > 2 && (
+                {messages.length > 1 && (
                   <div>
                     <Button
                       type="dashed"

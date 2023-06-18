@@ -1,9 +1,9 @@
-import { ChatCompletionRequestMessage } from "openai";
 import { FaRobot, FaUser } from "react-icons/fa";
 import Markdown from "./Markdown";
+import { ChatMessage } from "./types";
 
 type Props = {
-  message: ChatCompletionRequestMessage;
+  message: ChatMessage;
 };
 
 export default function Message({ message }: Props) {
