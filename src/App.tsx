@@ -107,7 +107,7 @@ function App() {
   };
 
   const handleSend = async () => {
-    if (!query.length) return;
+    if (!query.length || loading) return;
 
     const chat = new ChatOpenAI({
       openAIApiKey: settings?.apiKey,
