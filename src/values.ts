@@ -1,3 +1,9 @@
+export const greets = {
+  welcome: "Hello there! How can I be of assistance to you today?",
+  missingApiKey:
+    "Hi there! Before you begin using the tool, could you please provide your OpenAI API key? It's required to access the features and functionalities of the tool. Thank you!",
+};
+
 export const models = [
   "gpt-3.5-turbo",
   "gpt-3.5-turbo-0613",

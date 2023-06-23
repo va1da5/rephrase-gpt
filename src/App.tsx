@@ -11,6 +11,7 @@ import Message from "./Message";
 import Sidebar from "./Sidebar";
 import { ChatMessage, Settings } from "./types";
 import { HotkeyCallback } from "react-hotkeys-hook/dist/types";
+import { actions, characters, formats, greets, models } from "./values";
 
 const { TextArea } = Input;
 
@@ -25,14 +26,14 @@ const registerHotKey = (key: string, fn: HotkeyCallback) => {
 function App() {
   const [messageApi, contextHolder] = message.useMessage();
   const [settings, setSettings] = useLocalStorage<Settings>("__settings", {
-    model: "gpt-3.5-turbo",
+    model: models[0],
     style: [],
     tone: [],
-    format: "default",
-    action: "Rephrase",
-    character: "None",
+    format: formats[0],
+    action: actions[0],
+    character: characters[0],
     maxTokens: 3000,
-    temperature: 1,
+    temperature: 0.2,
     apiKey: "",
   });
 
@@ -41,18 +42,17 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [streamingMessage, setStreamingMessage] = useState("");
 
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    const welcome = `Hello! How may I assist you today?`;
-    const missingApiKey =
-      "Hello, please provide OpenAI API key before starting to use the tool";
-
     setMessages([
       {
         role: "assistant",
-        content: !settings?.apiKey.length ? missingApiKey : welcome,
+        content: !settings?.apiKey.length
+          ? greets.missingApiKey
+          : greets.welcome,
       },
     ]);
   }, []);
@@ -93,17 +93,7 @@ function App() {
   };
 
   const handleLLMNewToken = (token: string) => {
-    setMessages((current) => {
-      const lastMessage = current.at(-1) as ChatMessage;
-
-      return [
-        ...current.slice(0, current.length - 1),
-        {
-          ...lastMessage,
-          content: lastMessage?.content + token,
-        },
-      ];
-    });
+    setStreamingMessage((current) => current + token);
   };
 
   const handleSend = async () => {
@@ -127,16 +117,6 @@ function App() {
     setLoading(true);
 
     try {
-      setMessages((current) => {
-        return [
-          ...current,
-          {
-            role: "assistant",
-            content: "",
-          },
-        ];
-      });
-
       const response = await chat.call([
         new SystemChatMessage(
           settings?.action === "None" ? "" : getQueryContext()
@@ -144,11 +124,10 @@ function App() {
         new HumanChatMessage(query),
       ]);
 
-      setLoading(false);
-
+      setStreamingMessage("");
       setMessages((current) => {
         return [
-          ...current.slice(0, current.length - 1),
+          ...current,
           {
             role: "assistant",
             content: response.text,
@@ -163,12 +142,8 @@ function App() {
         type: "error",
         content: error.response.data.error.message,
       });
-
-      setMessages((current) => {
-        return [...current.slice(0, current.length - 1)];
-      });
+    } finally {
       setLoading(false);
-      return;
     }
   };
 
@@ -194,6 +169,15 @@ function App() {
                 .map((message, index) => (
                   <Message key={index} message={message} />
                 ))}
+
+              {streamingMessage.length > 0 && (
+                <Message
+                  message={{
+                    role: "assistant",
+                    content: streamingMessage,
+                  }}
+                />
+              )}
 
               <div ref={bottomDiv} className="my-10 flex justify-center">
                 {messages.length > 1 && (
