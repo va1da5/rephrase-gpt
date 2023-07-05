@@ -12,6 +12,7 @@ import Sidebar from "./Sidebar";
 import { ChatMessage, Settings } from "./types";
 import { HotkeyCallback } from "react-hotkeys-hook/dist/types";
 import { actions, characters, formats, greets, models } from "./values";
+import ApiKey from "./ApiKey";
 
 const { TextArea } = Input;
 
@@ -161,6 +162,7 @@ function App() {
         <Sidebar settings={settings} setSettings={setSettings} />
         <div className="relative ml-72 w-full">
           <div className="relative z-20 mx-auto max-w-4xl pb-[158px] pt-10 transition-all">
+            <ApiKey settings={settings} setSettings={setSettings} />
             <div className="py-8">
               {messages
                 .filter(
