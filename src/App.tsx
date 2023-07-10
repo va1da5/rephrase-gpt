@@ -148,9 +148,9 @@ function App() {
     }
   };
 
-  registerHotKey("shift+enter", handleSend);
+  registerHotKey("ctrl+enter", handleSend);
   registerHotKey("ctrl+l", () => setMessages([]));
-  registerHotKey("shift+delete", () => {
+  registerHotKey("ctrl+delete", () => {
     setQuery("");
   });
 
@@ -205,6 +205,14 @@ function App() {
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Your query goes here..."
                   autoSize={{ minRows: 1, maxRows: 6 }}
+                  onKeyDownCapture={(e) => {
+                    if (e.code != "Enter" || e.shiftKey) return;
+
+                    if (query.length && query.split("\n").length < 2) {
+                      e.preventDefault();
+                      return handleSend();
+                    }
+                  }}
                 />
                 <Button
                   type="primary"
