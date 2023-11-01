@@ -11,9 +11,6 @@ const Markdown = ({ children }: { children: string }) => {
       remarkPlugins={[remarkGfm]}
       rehypePlugins={[rehypeRaw]}
       components={{
-        p: ({ children }) => (
-          <p className="my-5 first:mt-1 last:mb-0">{children}</p>
-        ),
         code: ({ node, inline, className, children, ...props }) => {
           const match = /language-(\w+)/.exec(className || "");
           return !inline ? (

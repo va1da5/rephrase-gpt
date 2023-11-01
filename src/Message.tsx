@@ -1,6 +1,7 @@
 import { FaRobot, FaUser } from "react-icons/fa";
 import Markdown from "./Markdown";
 import { ChatMessage } from "./types";
+import clsx from "clsx";
 
 type Props = {
   message: ChatMessage;
@@ -16,7 +17,12 @@ export default function Message({ message }: Props) {
           </button>
         </div>
         <div className="w-full">
-          <div className="prose prose-sm dark:prose-invert max-w-full">
+          <div
+            className={clsx(
+              "prose prose-slate prose-lg dark:prose-invert max-w-full",
+              message.role == "user" && "opacity-50 hover:opacity-100"
+            )}
+          >
             <Markdown children={message.content} />
           </div>
         </div>
