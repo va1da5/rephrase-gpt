@@ -9,10 +9,11 @@ import useLocalStorage from "beautiful-react-hooks/useLocalStorage";
 import { useHotkeys } from "react-hotkeys-hook";
 import Message from "./Message";
 import Sidebar from "./Sidebar";
-import { ChatMessage, Settings } from "./types";
+import { ChatMessage, ContextHistory, Settings } from "./types";
 import { HotkeyCallback } from "react-hotkeys-hook/dist/types";
 import { actions, characters, formats, greets, models } from "./values";
 import ApiKey from "./ApiKey";
+import md5 from "md5";
 
 const { TextArea } = Input;
 
@@ -30,13 +31,16 @@ function App() {
     model: models[0],
     style: [],
     tone: [],
-    format: formats[0],
+    format: formats[0].value,
     action: actions[0],
     character: characters[0],
     maxTokens: 3000,
     temperature: 0.2,
     apiKey: "",
   });
+
+  const [queryContextCache, setQueryContextCache] =
+    useLocalStorage<ContextHistory>("__queryContextCache", {});
 
   const bottomDiv = useRef<HTMLDivElement>(null);
 
@@ -63,7 +67,7 @@ function App() {
       bottomDiv.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  const getQueryContext = () => {
+  const getRawQueryContext = () => {
     let output = `${settings?.action.toLocaleLowerCase()} ${
       settings?.action == "Fix Grammar" ? "to" : ""
     } the following content`;
@@ -82,11 +86,11 @@ function App() {
         .toLowerCase()} tone${settings?.tone?.length > 1 ? "s" : ""}`;
     }
 
-    if (settings?.character != "None") {
+    if (settings?.character.toLocaleLowerCase() != "none") {
       output += `. Answer as ${settings?.character} would do`;
     }
 
-    if (settings?.format != "default") {
+    if (settings?.format.toLowerCase() != "default") {
       output += `. ${settings?.format}`;
     }
 
@@ -95,6 +99,44 @@ function App() {
 
   const handleLLMNewToken = (token: string) => {
     setStreamingMessage((current) => current + token);
+  };
+
+  const getQueryContext = async () => {
+    const chat = new ChatOpenAI({
+      openAIApiKey: settings?.apiKey,
+      temperature: 0.2,
+      maxTokens: 500,
+      modelName: "gpt-3.5-turbo",
+    });
+
+    const rawQueryContext = getRawQueryContext();
+    const rawQueryContextHash = md5(rawQueryContext);
+
+    if (queryContextCache?.[rawQueryContextHash] !== undefined)
+      return queryContextCache[rawQueryContextHash];
+
+    console.info(rawQueryContext);
+
+    const promptContext = await chat.call([
+      new SystemChatMessage(
+        "Fix grammar to the following chat prompt context. Write in a passive voice meant for instructions"
+      ),
+      new HumanChatMessage(`"${getRawQueryContext()}"`),
+    ]);
+
+    promptContext.text = promptContext.text.replace(/"+/g, "");
+
+    console.info(promptContext.text);
+
+    const tmp: { [hash: string]: string } = {};
+    tmp[rawQueryContextHash] = promptContext.text;
+
+    setQueryContextCache((current) => ({
+      ...current,
+      ...tmp,
+    }));
+
+    return promptContext.text;
   };
 
   const handleSend = async () => {
@@ -120,7 +162,7 @@ function App() {
     try {
       const response = await chat.call([
         new SystemChatMessage(
-          settings?.action === "None" ? "" : getQueryContext()
+          settings?.action === "None" ? "" : await getQueryContext()
         ),
         new HumanChatMessage(query),
       ]);
@@ -138,10 +180,10 @@ function App() {
 
       setTimeout(scrollToNew, 500);
     } catch (error: any) {
-      console.error(error.response.data.error);
+      console.error(error);
       messageApi.open({
         type: "error",
-        content: error.response.data.error.message,
+        content: error?.response?.data?.error?.message,
       });
     } finally {
       setLoading(false);
@@ -188,6 +230,7 @@ function App() {
                       type="dashed"
                       title="Clear message history"
                       onClick={() => setMessages([])}
+                      className="text-slate-500 [&>span]:select-none"
                     >
                       Clear
                     </Button>
@@ -219,6 +262,7 @@ function App() {
                   disabled={settings?.apiKey.length == 0}
                   loading={loading}
                   onClick={handleSend}
+                  className="text-white bg-blue-600"
                 >
                   Send
                 </Button>

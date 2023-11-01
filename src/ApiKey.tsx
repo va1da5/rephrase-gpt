@@ -13,6 +13,21 @@ export default function ApiKey({ settings, setSettings }: Props) {
     isOpen: false,
     value: "",
   });
+
+  const onOk = () => {
+    setModal((current) => {
+      setSettings((now: Settings) => ({
+        ...now,
+        apiKey: current.value,
+      }));
+
+      return {
+        value: "",
+        isOpen: false,
+      };
+    });
+  };
+
   return (
     <div className="fixed top-5 right-5 z-30">
       <Button
@@ -33,25 +48,25 @@ export default function ApiKey({ settings, setSettings }: Props) {
       <Modal
         title="🔑 OpenAI API Key"
         open={modal.isOpen}
-        onOk={() => {
-          setModal((current) => {
-            setSettings((now: Settings) => ({
-              ...now,
-              apiKey: current.value,
-            }));
-
-            return {
-              value: "",
-              isOpen: false,
-            };
-          });
-        }}
         onCancel={() => {
           setModal((current) => ({
             ...current,
             isOpen: false,
           }));
         }}
+        footer={(_, { CancelBtn }) => (
+          <>
+            <CancelBtn />
+            <Button
+              type="primary"
+              disabled={modal.value.length < 5}
+              onClick={onOk}
+              className="text-white bg-blue-600"
+            >
+              OK
+            </Button>
+          </>
+        )}
       >
         {" "}
         <div className="my-5">
