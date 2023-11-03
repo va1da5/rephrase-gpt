@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { TbInfoCircleFilled } from "react-icons/tb";
 
 import {

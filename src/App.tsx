@@ -6,24 +6,14 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
 
 import useLocalStorage from "beautiful-react-hooks/useLocalStorage";
-import { useHotkeys } from "react-hotkeys-hook";
 import Message from "./Message";
 import Sidebar from "./Sidebar";
 import { ChatMessage, ContextHistory, Settings } from "./types";
-import { HotkeyCallback } from "react-hotkeys-hook/dist/types";
 import { actions, characters, formats, greets, models } from "./values";
 import ApiKey from "./ApiKey";
 import md5 from "md5";
-
-const { TextArea } = Input;
-
-const registerHotKey = (key: string, fn: HotkeyCallback) => {
-  return useHotkeys(key, fn, {
-    enabled: true,
-    preventDefault: true,
-    enableOnFormTags: ["input", "textarea"],
-  });
-};
+import PromptInput from "./PromptInput";
+import { registerHotKey } from "./utils";
 
 function App() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -48,8 +38,6 @@ function App() {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [streamingMessage, setStreamingMessage] = useState("");
-
-  const [query, setQuery] = useState("");
 
   useEffect(() => {
     setMessages([
@@ -139,8 +127,8 @@ function App() {
     return promptContext.text;
   };
 
-  const handleSend = async () => {
-    if (!query.length || loading) return;
+  const handleSend = async (prompt: string) => {
+    if (!prompt.length || loading) return;
 
     const chat = new ChatOpenAI({
       openAIApiKey: settings?.apiKey,
@@ -152,7 +140,7 @@ function App() {
     });
 
     setMessages((current) => {
-      return [...current, { role: "user", content: query }];
+      return [...current, { role: "user", content: prompt }];
     });
 
     scrollToNew();
@@ -164,7 +152,7 @@ function App() {
         new SystemChatMessage(
           settings?.action === "None" ? "" : await getQueryContext()
         ),
-        new HumanChatMessage(query),
+        new HumanChatMessage(prompt),
       ]);
 
       setStreamingMessage("");
@@ -190,11 +178,7 @@ function App() {
     }
   };
 
-  registerHotKey("ctrl+enter", handleSend);
   registerHotKey("ctrl+l", () => setMessages([]));
-  registerHotKey("ctrl+delete", () => {
-    setQuery("");
-  });
 
   return (
     <>
@@ -240,35 +224,11 @@ function App() {
             </div>
           </div>
 
-          <div className="fixed bottom-0 left-0 right-0 z-30 ml-72 bg-white pb-5 pt-5 transition-all duration-300">
-            <div className="mx-auto w-full max-w-4xl transition-all">
-              <div className="flex items-end gap-1 px-4 pb-4 pt-0 transition-colors ">
-                <TextArea
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Your query goes here..."
-                  autoSize={{ minRows: 1, maxRows: 6 }}
-                  onKeyDownCapture={(e) => {
-                    if (e.code != "Enter" || e.shiftKey) return;
-
-                    if (query.length && query.split("\n").length < 2) {
-                      e.preventDefault();
-                      return handleSend();
-                    }
-                  }}
-                />
-                <Button
-                  type="primary"
-                  disabled={settings?.apiKey.length == 0}
-                  loading={loading}
-                  onClick={handleSend}
-                  className="text-white bg-blue-600"
-                >
-                  Send
-                </Button>
-              </div>
-            </div>
-          </div>
+          <PromptInput
+            onSend={handleSend}
+            loading={loading}
+            disabled={settings?.apiKey.length == 0}
+          />
         </div>
       </div>
     </>
