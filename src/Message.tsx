@@ -2,6 +2,7 @@ import { FaRobot, FaUser } from "react-icons/fa";
 import Markdown from "./Markdown";
 import { ChatMessage } from "./types";
 import clsx from "clsx";
+import React from "react";
 
 type Props = {
   message: ChatMessage;
@@ -30,3 +31,5 @@ export default function Message({ message }: Props) {
     </div>
   );
 }
+
+export const MemoizedMessage = React.memo(Message);

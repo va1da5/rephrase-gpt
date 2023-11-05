@@ -2,6 +2,7 @@ import { Input, Button, Modal, Badge } from "antd";
 
 import { Settings } from "./types";
 import { useState } from "react";
+import React from "react";
 
 type Props = {
   setSettings: (fn: (current: Settings) => Settings) => void;
@@ -88,3 +89,5 @@ export default function ApiKey({ settings, setSettings }: Props) {
     </div>
   );
 }
+
+export const MemoizedApiKey = React.memo(ApiKey);

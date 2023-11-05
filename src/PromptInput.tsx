@@ -2,6 +2,7 @@ import { Button } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useState } from "react";
 import { registerHotKey } from "./utils";
+import React from "react";
 
 type Props = {
   onSend: (prompt: string) => void;
@@ -53,3 +54,5 @@ export default function PromptInput({ onSend, loading, disabled }: Props) {
     </div>
   );
 }
+
+export const MemoizedPromptInput = React.memo(PromptInput);

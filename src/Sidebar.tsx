@@ -11,6 +11,7 @@ import {
 
 import { styles, tones, formats, actions, characters, models } from "./values";
 import { Settings } from "./types";
+import React from "react";
 
 type Props = {
   setSettings: (fn: (current: Settings) => Settings) => void;
@@ -144,3 +145,5 @@ export default function Sidebar({ settings, setSettings }: Props) {
     </div>
   );
 }
+
+export const MemoizedSidebar = React.memo(Sidebar);

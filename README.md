@@ -10,3 +10,4 @@ Welcome to the code repository which offers a new user interface for ChatGPT API
 - [Best Tailwind CSS](https://sailboatui.com/tools/)
 - [LangChain](https://js.langchain.com/docs/)
 - [How to remove tailwind prefights for specific pages](https://stackoverflow.com/questions/75124039/how-to-remove-tailwind-prefights-for-specific-pages/75146317#75146317)
+- [Preventing React re-renders with composition](https://www.youtube.com/watch?v=7sgBhmLjVws&ab_channel=DeveloperWay)
