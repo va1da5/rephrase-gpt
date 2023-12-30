@@ -8,6 +8,10 @@ export type Settings = {
   maxTokens: number;
   temperature: number;
   apiKey: string;
+  aiConsultantId: number;
+  usePassiveVoice: boolean;
+  languageFeaturesEnabled: boolean;
+  privacyFilterEnabled: boolean;
 };
 
 export type ChatMessage = {

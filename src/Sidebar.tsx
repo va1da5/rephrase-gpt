@@ -20,7 +20,7 @@ type Props = {
 
 export default function Sidebar({ settings, setSettings }: Props) {
   return (
-    <div className="fixed h-screen  w-72 overflow-y-auto bg-zinc-800 px-4 pt-2 pb-20 text-white">
+    <div className="fixed h-screen  w-72 overflow-y-auto bg-zinc-800 px-4 pb-20 pt-2 text-white">
       <h1 className="mb-10 mt-3 text-3xl">🤓 RephraseGPT</h1>
 
       <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
