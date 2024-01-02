@@ -6,7 +6,7 @@ import { useSettingsContext } from "./context";
 type Props = {};
 
 export default function PrivacyFilter({}: Props) {
-  const settings = useSettingsContext();
+  const { settings, dispatch } = useSettingsContext();
   return (
     <div className="mt-10 flex flex-col gap-4">
       <div className="flex items-center justify-between">

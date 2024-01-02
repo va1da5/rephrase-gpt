@@ -3,35 +3,16 @@ import RightSidebar from "./RightSidebar";
 import Chat from "./Chat";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SettingsContext } from "./context";
-import { useState } from "react";
-import { Settings } from "./types";
-import {
-  gptModels,
-  languageActions,
-  outputFormats,
-  pretendCharacters,
-} from "./values";
+import { useReducer } from "react";
+import { settingsReducer } from "./state/SettingsReducer";
+import { defaultSettings } from "./state/Settings";
 
 export default function App() {
-  const [settings, setSettings] = useState<Settings>({
-    languageFeaturesEnabled: true,
-    model: gptModels[0],
-    style: ["Casual", "Inclusive"],
-    tone: ["Calm", "Friendly"],
-    format: outputFormats[0].value,
-    action: languageActions[2],
-    character: pretendCharacters[0],
-    usePassiveVoice: true,
-    maxTokens: 3000,
-    temperature: 0.3,
-    apiKey: "",
-    aiConsultantId: 0,
-    privacyFilterEnabled: true,
-  });
+  const [settings, dispatch] = useReducer(settingsReducer, defaultSettings);
 
   return (
     <>
-      <SettingsContext.Provider value={settings}>
+      <SettingsContext.Provider value={{ settings, dispatch }}>
         <div className="grid h-dvh grid-cols-12">
           <ScrollArea className="col-span-2 h-dvh  bg-zinc-800">
             <Sidebar />

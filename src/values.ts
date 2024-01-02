@@ -4,6 +4,8 @@ export const greets = {
     "Hi there! Before you begin using the tool, could you please provide your OpenAI API key? It's required to access the features and functionalities of the tool. Thank you!",
 };
 
+export const maxTokens = 32768;
+
 export const gptModels = [
   "gpt-3.5-turbo",
   "gpt-3.5-turbo-0613",

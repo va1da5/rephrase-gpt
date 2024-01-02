@@ -17,6 +17,7 @@ type CustomSelectProps = {
     value: string;
   }[];
   value: string | undefined;
+  onValueChange: (value: string) => void;
 };
 
 export default function Options({
@@ -24,6 +25,7 @@ export default function Options({
   options,
   placeholder,
   value,
+  onValueChange,
 }: CustomSelectProps) {
   const id = React.useId();
   return (
@@ -32,7 +34,7 @@ export default function Options({
         <Label htmlFor={id} className="text-sm text-white">
           {label}
         </Label>
-        <Select value={value}>
+        <Select value={value} onValueChange={onValueChange}>
           <SelectTrigger
             id={id}
             className="w-full border-zinc-500 bg-zinc-800 text-white focus:ring-offset-1 focus:ring-offset-blue-600"

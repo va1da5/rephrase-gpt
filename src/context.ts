@@ -1,13 +1,22 @@
-import { createContext, useContext } from "react";
-import { Settings } from "./types";
+import { Dispatch, createContext, useContext } from "react";
+import { Settings } from "./state/Settings";
+import { SettingsAction } from "./state/SettingsReducer";
 
-export const SettingsContext = createContext<Settings | undefined>(undefined);
+interface SettingsContextProps {
+  settings: Settings;
+  dispatch: Dispatch<SettingsAction>;
+}
 
-export function useSettingsContext(): Settings {
-  const settings = useContext(SettingsContext);
+export const SettingsContext = createContext<SettingsContextProps | undefined>(
+  undefined
+);
 
-  if (settings == undefined) {
+export function useSettingsContext() {
+  const context = useContext(SettingsContext);
+
+  if (context == undefined) {
     throw new Error("useSettingsContext must be used with a SettingsContext");
   }
-  return settings;
+
+  return context;
 }

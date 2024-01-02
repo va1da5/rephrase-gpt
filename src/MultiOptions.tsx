@@ -2,6 +2,7 @@ import React from "react";
 import Select, {
   ClearIndicatorProps,
   DropdownIndicatorProps,
+  MultiValue,
   MultiValueRemoveProps,
   components,
 } from "react-select";
@@ -19,9 +20,15 @@ type Props = {
   label: string;
   options: Option[];
   value: Option[];
+  onChange: (newValue: MultiValue<Option>) => void;
 };
 
-export default function MultiOptions({ options, label, value }: Props) {
+export default function MultiOptions({
+  options,
+  label,
+  value,
+  onChange,
+}: Props) {
   const id = React.useId();
   return (
     <div>
@@ -34,6 +41,7 @@ export default function MultiOptions({ options, label, value }: Props) {
         options={options}
         isMulti
         unstyled
+        onChange={onChange}
         hideSelectedOptions={false}
         value={value}
         classNames={{

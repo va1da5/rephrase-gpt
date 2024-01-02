@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 type Props = {};
 
 export default function ApiKey({}: Props) {
-  const settings = useSettingsContext();
+  const { settings, dispatch } = useSettingsContext();
   return (
     <div>
       <Button className="relative flex w-full items-center bg-zinc-700 px-10 transition-all duration-300 hover:bg-zinc-500">
