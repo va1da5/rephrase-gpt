@@ -9,7 +9,7 @@ export interface Settings {
   model: string;
   maxTokens: number;
   temperature: number;
-  apiKey: string;
+  apiKey?: string;
   aiConsultantId: number;
   languageFeaturesEnabled: boolean;
   style: string[];
@@ -19,6 +19,11 @@ export interface Settings {
   character: string;
   usePassiveVoice: boolean;
   privacyFilterEnabled: boolean;
+  privacyKeywords: string[];
+  configurationPresents?: {
+    label: string;
+    value: string;
+  }[];
 }
 
 export const defaultSettings: Settings = {
@@ -35,4 +40,6 @@ export const defaultSettings: Settings = {
   character: pretendCharacters[0],
   usePassiveVoice: true,
   privacyFilterEnabled: true,
+  privacyKeywords: ["AWS", "VPC"],
+  configurationPresents: [],
 };

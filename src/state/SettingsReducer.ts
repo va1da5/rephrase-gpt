@@ -15,6 +15,10 @@ type SettingsActionType =
   | "SET_CHARACTER"
   | "SET_USE_PASSIVE_VOICE"
   | "SET_PRIVACY_FILTER_ENABLED"
+  | "SET_PRIVACY_KEYWORDS"
+  | "ADD_CONFIGURATION_PRESETS"
+  | "REMOVE_CONFIGURATION_PRESETS"
+  | "RESTORE_CONFIGURATION_PRESETS"
   | string;
 
 export const SettingsReducerAction = {
@@ -31,6 +35,10 @@ export const SettingsReducerAction = {
   SET_CHARACTER: "SET_CHARACTER",
   SET_USE_PASSIVE_VOICE: "SET_USE_PASSIVE_VOICE",
   SET_PRIVACY_FILTER_ENABLED: "SET_PRIVACY_FILTER_ENABLED",
+  SET_PRIVACY_KEYWORDS: "SET_PRIVACY_KEYWORDS",
+  ADD_CONFIGURATION_PRESETS: "ADD_CONFIGURATION_PRESETS",
+  REMOVE_CONFIGURATION_PRESETS: "REMOVE_CONFIGURATION_PRESETS",
+  RESTORE_CONFIGURATION_PRESETS: "RESTORE_CONFIGURATION_PRESETS",
 };
 
 export interface SettingsAction {
@@ -71,7 +79,63 @@ export const settingsReducer = (
     case SettingsReducerAction.SET_USE_PASSIVE_VOICE:
       return { ...state, usePassiveVoice: action.payload as boolean };
     case SettingsReducerAction.SET_PRIVACY_FILTER_ENABLED:
+      if (state.privacyKeywords.length < 1) return state;
       return { ...state, privacyFilterEnabled: action.payload as boolean };
+    case SettingsReducerAction.SET_PRIVACY_KEYWORDS:
+      const keywords = action.payload as string[];
+      const previousCount = state.privacyKeywords.length;
+      let { privacyFilterEnabled } = state;
+      if (keywords.length < 1) privacyFilterEnabled = false;
+      if (keywords.length > 0 && !previousCount) privacyFilterEnabled = true;
+      return { ...state, privacyKeywords: keywords, privacyFilterEnabled };
+
+    case SettingsReducerAction.ADD_CONFIGURATION_PRESETS:
+      const stateClone = { ...state };
+
+      delete stateClone.configurationPresents;
+      delete stateClone.apiKey;
+
+      const newPreset = {
+        label: action.payload as string,
+        value: JSON.stringify(stateClone),
+      };
+
+      if (!state.configurationPresents) {
+        return {
+          ...state,
+          configurationPresents: [newPreset],
+        };
+      }
+
+      return {
+        ...state,
+        configurationPresents: [newPreset, ...state.configurationPresents],
+      };
+
+    case SettingsReducerAction.REMOVE_CONFIGURATION_PRESETS:
+      const index = action.payload as number;
+
+      return {
+        ...state,
+        configurationPresents: state.configurationPresents?.filter(
+          (_, idx) => index != idx
+        ),
+      };
+
+    case SettingsReducerAction.RESTORE_CONFIGURATION_PRESETS: {
+      const index = action.payload as number;
+
+      if (
+        !state.configurationPresents ||
+        state.configurationPresents.length < index
+      ) {
+        return state;
+      }
+
+      const { value } = state.configurationPresents[index];
+
+      return { ...state, ...JSON.parse(value) };
+    }
 
     default:
       return state;
