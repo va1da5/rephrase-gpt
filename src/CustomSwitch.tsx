@@ -3,12 +3,14 @@ import { Switch } from "@/components/ui/switch";
 type Props = {
   label: string;
   checked: boolean;
+  disabled?: boolean;
   onCheckedChange: (checked: boolean) => void;
 };
 
 export default function CustomSwitch({
   label,
   checked,
+  disabled,
   onCheckedChange,
 }: Props) {
   return (
@@ -22,6 +24,7 @@ export default function CustomSwitch({
             checked={checked}
             className="data-[state=checked]:bg-zinc-200 data-[state=unchecked]:bg-zinc-600"
             onCheckedChange={onCheckedChange}
+            disabled={disabled}
           />
         </div>
       </div>

@@ -20,6 +20,7 @@ type Props = {
   label: string;
   options: Option[];
   value: Option[];
+  disabled?: boolean;
   onChange: (newValue: MultiValue<Option>) => void;
 };
 
@@ -27,6 +28,7 @@ export default function MultiOptions({
   options,
   label,
   value,
+  disabled,
   onChange,
 }: Props) {
   const id = React.useId();
@@ -43,12 +45,14 @@ export default function MultiOptions({
         unstyled
         onChange={onChange}
         hideSelectedOptions={false}
+        isDisabled={disabled}
         value={value}
         classNames={{
-          control: ({ isFocused }) =>
+          control: ({ isFocused, isDisabled }) =>
             cn(
               isFocused ? controlStyles.focus : controlStyles.nonFocus,
-              controlStyles.base
+              controlStyles.base,
+              isDisabled && "cursor-not-allowed opacity-50"
             ),
           placeholder: () => placeholderStyles,
           input: () => selectInputStyles,
@@ -80,6 +84,8 @@ const controlStyles = {
   base: "border border-zinc-500 rounded-md bg-zinc-800 hover:cursor-pointer",
   focus: "border-primary-600 ring-1 ring-primary-500",
   nonFocus: "border-zinc-300 hover:border-zinc-400",
+  disabled:
+    "pointer-events-none opacity-50 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 };
 const placeholderStyles = "text-zinc-500 pl-1 py-0.5";
 const selectInputStyles = "pl-1 py-0.5 text-white";

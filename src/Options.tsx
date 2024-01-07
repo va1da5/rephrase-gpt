@@ -18,6 +18,7 @@ type CustomSelectProps = {
   }[];
   value: string | undefined;
   onValueChange: (value: string) => void;
+  disabled?: boolean;
 };
 
 export default function Options({
@@ -26,6 +27,7 @@ export default function Options({
   placeholder,
   value,
   onValueChange,
+  disabled,
 }: CustomSelectProps) {
   const id = React.useId();
   return (
@@ -34,7 +36,7 @@ export default function Options({
         <Label htmlFor={id} className="text-sm text-white">
           {label}
         </Label>
-        <Select value={value} onValueChange={onValueChange}>
+        <Select value={value} onValueChange={onValueChange} disabled={disabled}>
           <SelectTrigger
             id={id}
             className="w-full border-zinc-500 bg-zinc-800 text-white focus:ring-offset-1 focus:ring-offset-blue-600"

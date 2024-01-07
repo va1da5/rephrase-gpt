@@ -33,6 +33,7 @@ export default function LeftSidebar({}: SidebarProps) {
       />
 
       <MultiOptions
+        disabled={!settings.languageFeaturesEnabled}
         label="Language Style"
         options={languageStyles.map((value) => ({ label: value, value }))}
         value={settings.style.map((value) => ({ label: value, value }))}
@@ -45,6 +46,7 @@ export default function LeftSidebar({}: SidebarProps) {
       />
 
       <MultiOptions
+        disabled={!settings.languageFeaturesEnabled}
         label="Language Tone"
         options={languageTones.map((value) => ({ label: value, value }))}
         value={settings.tone.map((value) => ({ label: value, value }))}
@@ -57,6 +59,7 @@ export default function LeftSidebar({}: SidebarProps) {
       />
 
       <Options
+        disabled={!settings.languageFeaturesEnabled}
         label="Imitate Character"
         options={pretendCharacters.map((value) => ({ label: value, value }))}
         value={settings.character}
@@ -69,6 +72,7 @@ export default function LeftSidebar({}: SidebarProps) {
       />
 
       <Options
+        disabled={!settings.languageFeaturesEnabled}
         label="Output Format"
         options={outputFormats.map(({ label, value }) => ({ label, value }))}
         value={settings.format}
@@ -81,6 +85,7 @@ export default function LeftSidebar({}: SidebarProps) {
       />
 
       <Options
+        disabled={!settings.languageFeaturesEnabled}
         label="Action"
         options={languageActions.map((value) => ({ label: value, value }))}
         value={settings.action}
@@ -93,6 +98,7 @@ export default function LeftSidebar({}: SidebarProps) {
       />
 
       <CustomSwitch
+        disabled={!settings.languageFeaturesEnabled}
         label="Use Passive Voice"
         checked={settings.usePassiveVoice}
         onCheckedChange={(checked) =>
