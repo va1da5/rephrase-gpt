@@ -6,6 +6,8 @@ export const greets = {
 
 export const maxTokens = 32768;
 
+export const localStorageSettingsKeyName = "___settings";
+
 export const gptModels = [
   "gpt-3.5-turbo",
   "gpt-3.5-turbo-0613",
@@ -109,6 +111,8 @@ export const languageActions = [
   "Explain",
   "Fix Grammar",
   "Paraphrase",
+  "Rephrase",
+  "Reword",
   "Rewrite",
   "Summarize",
 ];

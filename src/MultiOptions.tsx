@@ -104,7 +104,7 @@ const groupHeadingStyles = "ml-3 mt-2 mb-1 text-gray-500 text-sm";
 const optionStyles = {
   base: "hover:cursor-pointer px-3 py-2 rounded",
   focus: "bg-gray-100 active:bg-gray-200 text-black",
-  selected: "after:content-['✔'] after:ml-2 after:text-gray-500 text-gray-500",
+  selected: "text-gray-500",
 };
 const noOptionsMessageStyles =
   "text-gray-500 p-2 bg-zinc-800 border border-dashed border-zinc-500 rounded-sm";

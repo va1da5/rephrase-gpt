@@ -19,6 +19,16 @@ export default function ConfigurationPresets() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
 
+  function handleSubmit() {
+    if (input.length < 1) return;
+    dispatch({
+      type: SettingsReducerAction.ADD_CONFIGURATION_PRESETS,
+      payload: input.trim(),
+    });
+    setInput("");
+    setOpen(false);
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div>
@@ -48,24 +58,24 @@ export default function ConfigurationPresets() {
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-2">
-            <Input
-              placeholder="Name of the snapshot"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                handleSubmit();
+              }}
+            >
+              <Input
+                placeholder="Name of the snapshot"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
+            </form>
           </div>
           <DialogFooter>
             <Button
               type="submit"
               disabled={input.length < 1}
-              onClick={() => {
-                dispatch({
-                  type: SettingsReducerAction.ADD_CONFIGURATION_PRESETS,
-                  payload: input.trim(),
-                });
-                setInput("");
-                setOpen(false);
-              }}
+              onClick={handleSubmit}
             >
               Create
             </Button>

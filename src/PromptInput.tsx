@@ -34,6 +34,7 @@ export default function PromptInput({ onSend, loading, disabled }: Props) {
 
               if (prompt.length && prompt.split("\n").length < 2) {
                 e.preventDefault();
+                alert(1);
                 return onSend(prompt);
               }
             }}
@@ -45,7 +46,7 @@ export default function PromptInput({ onSend, loading, disabled }: Props) {
             onClick={() => {
               onSend(prompt);
             }}
-            className="text-white bg-blue-600"
+            className="bg-blue-600 text-white"
           >
             Send
           </Button>

@@ -36,6 +36,13 @@ export default function PrivacyFilter({}: Props) {
       .filter((item) => item.length > 0);
   }
 
+  function handleSubmit() {
+    if (parseKeywords(input).length < 1) return;
+    addKeywords(input);
+    setOpen(false);
+    setInput("");
+  }
+
   return (
     <div className="mt-10 flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -77,21 +84,24 @@ export default function PrivacyFilter({}: Props) {
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-2">
-            <Input
-              placeholder="Comma separated list of sensitive keywords"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                handleSubmit();
+              }}
+            >
+              <Input
+                placeholder="Comma separated list of sensitive keywords"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
+            </form>
           </div>
           <DialogFooter>
             <Button
               type="submit"
               disabled={parseKeywords(input).length < 1}
-              onClick={() => {
-                addKeywords(input);
-                setOpen(false);
-                setInput("");
-              }}
+              onClick={handleSubmit}
             >
               Add
             </Button>

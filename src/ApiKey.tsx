@@ -33,6 +33,13 @@ export default function ApiKey({}: Props) {
     });
   }
 
+  function handleSubmit() {
+    if (!isInputValid(input)) return;
+    updateApiKey(input);
+    setInput("");
+    setOpen(false);
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -57,14 +64,21 @@ export default function ApiKey({}: Props) {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-2">
-          <Input
-            id="apikey"
-            placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-            className=""
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            spellCheck={false}
-          />
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              handleSubmit();
+            }}
+          >
+            <Input
+              id="apikey"
+              placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+              className=""
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              spellCheck={false}
+            />
+          </form>
           <p
             className={cn(
               "text-sm text-red-500",
@@ -77,11 +91,7 @@ export default function ApiKey({}: Props) {
         <DialogFooter>
           <Button
             type="submit"
-            onClick={() => {
-              updateApiKey(input);
-              setInput("");
-              setOpen(false);
-            }}
+            onClick={handleSubmit}
             disabled={!isInputValid(input)}
           >
             Save

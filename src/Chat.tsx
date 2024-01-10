@@ -1,7 +1,8 @@
-import React from "react";
 import { ScrollArea } from "./components/ui/scroll-area";
 import { Textarea } from "./components/ui/textarea";
 import { Button } from "./components/ui/button";
+import { useSettingsContext } from "./context";
+import { useRef, useState } from "react";
 
 function Placeholder() {
   return (
@@ -169,9 +170,19 @@ function Placeholder() {
   );
 }
 
-type ChatProps = {};
+export default function Chat() {
+  const { settings, dispatch } = useSettingsContext();
+  const [input, setInput] = useState("");
+  const formRef = useRef<HTMLFormElement | null>(null);
 
-export default function Chat({}: ChatProps) {
+  function getPromptValue(): string {
+    if (formRef.current)
+      return (formRef.current.elements.namedItem("prompt") as HTMLInputElement)
+        ?.value;
+
+    return "";
+  }
+
   return (
     <div className=" col-span-8 grid h-dvh grid-cols-1 grid-rows-[minmax(0,_1fr)_auto]">
       <ScrollArea className="h-full overflow-y-auto p-10">
@@ -179,10 +190,33 @@ export default function Chat({}: ChatProps) {
       </ScrollArea>
 
       <div>
-        <div className="flex items-end gap-3 p-10">
-          <Textarea placeholder="Your query goes here" />
-          <Button>Submit</Button>
-        </div>
+        <form
+          ref={formRef}
+          className="flex items-end gap-3 p-10"
+          onSubmit={(event) => {
+            event.preventDefault();
+
+            setInput(getPromptValue());
+          }}
+        >
+          <Textarea
+            // value={input}
+            // onChange={(e) => setInput(e.target.value)}
+            placeholder="Your query goes here..."
+            name="prompt"
+            onKeyDownCapture={(event) => {
+              if (event.code != "Enter" || event.shiftKey) return;
+
+              const prompt = getPromptValue();
+
+              if (prompt.length && prompt.split("\n").length < 2) {
+                event.preventDefault();
+                return setInput(prompt);
+              }
+            }}
+          />
+          <Button type="submit">Submit</Button>
+        </form>
       </div>
     </div>
   );
