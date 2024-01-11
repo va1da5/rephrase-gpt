@@ -11,6 +11,7 @@ export interface Settings {
   temperature: number;
   apiKey?: string;
   aiConsultantId: number;
+  markdownOutput: boolean;
   languageFeaturesEnabled: boolean;
   style: string[];
   tone: string[];
@@ -32,6 +33,7 @@ export const defaultSettings: Settings = {
   temperature: 0.3,
   apiKey: "",
   aiConsultantId: 0,
+  markdownOutput: false,
   languageFeaturesEnabled: true,
   style: [],
   tone: [],

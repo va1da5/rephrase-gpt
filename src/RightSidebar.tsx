@@ -7,10 +7,9 @@ import PrivacyFilter from "./PrivacyFilter";
 import { aiConsultants, gptModels } from "./values";
 import { useSettingsContext } from "./context";
 import { SettingsReducerAction } from "./state/SettingsReducer";
+import CustomSwitch from "./CustomSwitch";
 
-type Props = {};
-
-export default function RightSidebar({}: Props) {
+export default function RightSidebar() {
   const { settings, dispatch } = useSettingsContext();
 
   return (
@@ -58,6 +57,17 @@ export default function RightSidebar({}: Props) {
             className="border-zinc-500 bg-zinc-800 text-base text-white transition-all duration-100 focus-visible:ring-offset-1"
           />
         </div>
+
+        <CustomSwitch
+          checked={settings.markdownOutput}
+          label="Markdown Output"
+          onCheckedChange={(checked) =>
+            dispatch({
+              type: SettingsReducerAction.SET_MARKDOWN_OUTPUT,
+              payload: checked,
+            })
+          }
+        />
 
         <div className="flex flex-col gap-3">
           <Label

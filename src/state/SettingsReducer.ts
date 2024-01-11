@@ -7,6 +7,7 @@ type SettingsActionType =
   | "SET_TEMPERATURE"
   | "SET_API_KEY"
   | "SET_AI_CONSULTANT"
+  | "SET_MARKDOWN_OUTPUT"
   | "SET_LANGUAGE_FEATURES_ENABLED"
   | "SET_STYLES"
   | "SET_TONES"
@@ -27,6 +28,7 @@ export const SettingsReducerAction = {
   SET_TEMPERATURE: "SET_TEMPERATURE",
   SET_API_KEY: "SET_API_KEY",
   SET_AI_CONSULTANT: "SET_AI_CONSULTANT",
+  SET_MARKDOWN_OUTPUT: "SET_MARKDOWN_OUTPUT",
   SET_LANGUAGE_FEATURES_ENABLED: "SET_LANGUAGE_FEATURES_ENABLED",
   SET_STYLES: "SET_STYLES",
   SET_TONES: "SET_TONES",
@@ -64,6 +66,8 @@ export const settingsReducer = (
       return { ...state, apiKey: action.payload as string };
     case SettingsReducerAction.SET_AI_CONSULTANT:
       return { ...state, aiConsultantId: action.payload as number };
+    case SettingsReducerAction.SET_MARKDOWN_OUTPUT:
+      return { ...state, markdownOutput: action.payload as boolean };
     case SettingsReducerAction.SET_LANGUAGE_FEATURES_ENABLED:
       return { ...state, languageFeaturesEnabled: action.payload as boolean };
     case SettingsReducerAction.SET_STYLES:
