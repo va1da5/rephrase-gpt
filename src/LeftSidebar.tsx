@@ -74,7 +74,7 @@ export default function LeftSidebar({}: SidebarProps) {
       <Options
         disabled={!settings.languageFeaturesEnabled}
         label="Output Format"
-        options={outputFormats.map(({ label, value }) => ({ label, value }))}
+        options={outputFormats}
         value={settings.format}
         onValueChange={(value) => {
           dispatch({
@@ -87,7 +87,7 @@ export default function LeftSidebar({}: SidebarProps) {
       <Options
         disabled={!settings.languageFeaturesEnabled}
         label="Action"
-        options={languageActions.map((value) => ({ label: value, value }))}
+        options={languageActions}
         value={settings.action}
         onValueChange={(value) => {
           dispatch({

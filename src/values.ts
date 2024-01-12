@@ -4,9 +4,13 @@ export const greets = {
     "Hi there! Before you begin using the tool, could you please provide your OpenAI API key? It's required to access the features and functionalities of the tool. Thank you!",
 };
 
+export const queryContextTuningInstruction =
+  "Fix grammar for the following chat prompt context. Write in a passive voice meant for instructions in a concise manner. Provide only fixed text.";
+
 export const maxTokens = 32768;
 
 export const localStorageSettingsKeyName = "___settings";
+export const localStorageQueryContextCacheKeyName = "___queryContextCache";
 
 export const gptModels = [
   "gpt-3.5-turbo",
@@ -26,6 +30,7 @@ export const languageStyles = [
   "Business",
   "Casual",
   "Conversational",
+  "Corporate",
   "Creative",
   "Critical",
   "Descriptive",
@@ -105,16 +110,22 @@ export const outputFormats = [
     label: "Layman's terms",
     value: "Answer like I'm five",
   },
+  {
+    label: "Corporate",
+    value: "Answer using corporate jargon where appropriate",
+  },
 ];
 
 export const languageActions = [
-  "Explain",
-  "Fix Grammar",
-  "Paraphrase",
-  "Rephrase",
-  "Reword",
-  "Rewrite",
-  "Summarize",
+  { label: "Explain", value: "Explain" },
+  { label: "Fix Grammar", value: "Fix grammar to" },
+  { label: "Paraphrase", value: "Paraphrase" },
+  { label: "Rephrase", value: "Rephrase" },
+  { label: "Reword", value: "Reword" },
+  { label: "Rewrite", value: "Rewrite" },
+  { label: "Subject", value: "Create an email subject from " },
+  { label: "Summarize", value: "Summarize" },
+  { label: "Title", value: "Create a title for" },
 ];
 
 export const pretendCharacters = [

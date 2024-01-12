@@ -58,33 +58,30 @@ export default function Chat() {
     });
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     setLoading(true);
     scrollToView();
 
-    setMessages((current) => [
-      ...current,
-      { role: "user", content: getPromptValue() },
-    ]);
+    let prompt = getPromptValue();
 
-    inference({
+    setMessages((current) => [...current, { role: "user", content: prompt }]);
+
+    const response = await inference({
       settings,
-      prompt: getPromptValue(),
+      prompt: settings.languageFeaturesEnabled ? `"${prompt}"` : prompt,
       streamHandler(token) {
         setStreamingMessage((current) => current + token);
       },
-      messageHandler(message) {
-        setLoading(false);
-        setMessages((current) => {
-          return [
-            ...current,
-            {
-              role: "assistant",
-              content: message,
-            },
-          ];
-        });
-      },
+    });
+    setLoading(false);
+    setMessages((current) => {
+      return [
+        ...current,
+        {
+          role: "assistant",
+          content: response,
+        },
+      ];
     });
   }
 

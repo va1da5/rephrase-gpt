@@ -38,7 +38,7 @@ export const defaultSettings: Settings = {
   style: [],
   tone: [],
   format: outputFormats[0].value,
-  action: languageActions[2],
+  action: languageActions[3].value,
   character: pretendCharacters[0],
   usePassiveVoice: false,
   privacyFilterEnabled: false,
