@@ -13,7 +13,7 @@ export default function Message({ message }: Props) {
     <div className="mb-2 rounded-lg px-4">
       <div className="response-block group relative min-h-[52px] scroll-mt-32 rounded-md pb-2 pl-14 pr-2 pt-2 ">
         <div className="absolute left-2 top-2">
-          <button className="flex h-9 w-9 flex-none items-center justify-center rounded-md bg-gray-200 text-gray-500 transition-all hover:bg-gray-300 active:bg-gray-200">
+          <button className="flex h-9 w-9 flex-none items-center justify-center rounded-md bg-gradient-to-t from-slate-300 to-slate-100 text-gray-500 transition-all hover:bg-gray-300 active:bg-gray-200">
             {message.role == "user" ? <FaUser /> : <FaRobot />}
           </button>
         </div>

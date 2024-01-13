@@ -16,3 +16,5 @@ Welcome to the code repository which offers a new user interface for ChatGPT API
 - [Styling React Select with Tailwind](https://www.jussivirtanen.fi/writing/styling-react-select-with-tailwind)
 - [Awesome ChatGPT Prompts](https://github.com/f/awesome-chatgpt-prompts)
 - [This repo collects leaked prompts of GPTs](https://github.com/linexjlin/GPTs)
+- [ChatGPT System Prompts](https://github.com/mustvlad/ChatGPT-System-Prompts)
+- [Tailwind CSS Gradient Generator](https://tailwindcomponents.com/gradient-generator/)

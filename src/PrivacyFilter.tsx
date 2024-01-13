@@ -45,7 +45,7 @@ export default function PrivacyFilter({}: Props) {
 
   return (
     <div className="mt-10 flex flex-col gap-4">
-      <div className="flex items-center justify-between">
+      <div className="flex content-center items-center justify-between">
         <div className="text-lg font-bold text-gray-300">Privacy Filter</div>
         <Switch
           checked={settings.privacyFilterEnabled}

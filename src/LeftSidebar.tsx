@@ -1,3 +1,4 @@
+import { Rabbit } from "lucide-react";
 import ConfigurationPresets from "./ConfigurationPresets";
 import CustomSwitch from "./CustomSwitch";
 import MultiOptions from "./MultiOptions";
@@ -11,6 +12,7 @@ import {
   outputFormats,
   pretendCharacters,
 } from "./values";
+import { Switch } from "./components/ui/switch";
 
 type SidebarProps = {};
 
@@ -18,19 +20,25 @@ export default function LeftSidebar({}: SidebarProps) {
   const { settings, dispatch } = useSettingsContext();
 
   return (
-    <div className="mt-5 flex w-full flex-col gap-4 px-4">
-      <h1 className="w-full text-center text-4xl text-white">🐙 RephraseGPT</h1>
+    <div className="mt-5 flex w-full flex-col gap-4 px-4 ">
+      <h1 className="flex w-full items-center gap-2 bg-gradient-to-r from-fuchsia-400 to-indigo-500 bg-clip-text text-3xl font-medium text-transparent">
+        <Rabbit className="inline-block text-fuchsia-400" />{" "}
+        <span>RephraseGPT</span>
+      </h1>
 
-      <CustomSwitch
-        checked={settings.languageFeaturesEnabled}
-        label="Language Features"
-        onCheckedChange={(checked) =>
-          dispatch({
-            type: SettingsReducerAction.SET_LANGUAGE_FEATURES_ENABLED,
-            payload: checked,
-          })
-        }
-      />
+      <div className="flex content-center items-center justify-between">
+        <div className="text-lg font-bold text-gray-300">Language Features</div>
+        <Switch
+          checked={settings.languageFeaturesEnabled}
+          className="data-[state=checked]:bg-zinc-200 data-[state=unchecked]:bg-zinc-600"
+          onCheckedChange={(checked) =>
+            dispatch({
+              type: SettingsReducerAction.SET_LANGUAGE_FEATURES_ENABLED,
+              payload: checked,
+            })
+          }
+        />
+      </div>
 
       <MultiOptions
         disabled={!settings.languageFeaturesEnabled}

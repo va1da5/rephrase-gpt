@@ -3,6 +3,7 @@ import { Settings } from "./state/Settings";
 import { HumanMessage, SystemMessage } from "langchain/schema";
 import {
   adjectives,
+  aiConsultants,
   fruits,
   localStorageQueryContextCacheKeyName,
   queryContextTuningInstruction,
@@ -54,11 +55,23 @@ export async function inference({
     mapping = sanitized.mapping;
   }
 
+  let queryContext = (await makeQueryContext(settings)) as string;
+
+  if (settings.aiConsultantId != 0) {
+    queryContext = `${
+      aiConsultants[settings.aiConsultantId].value
+    }\n\n${queryContext}`;
+  }
+
+  const messages = [];
+
+  if (queryContext.trim().length)
+    messages.push(new SystemMessage(queryContext));
+
+  messages.push(new HumanMessage(prompt));
+
   try {
-    const response = await chat.call([
-      new SystemMessage((await makeQueryContext(settings)) as string),
-      new HumanMessage(prompt),
-    ]);
+    const response = await chat.call(messages);
 
     if (settings.privacyFilterEnabled)
       return privacyDecode(response.content as string, mapping);
@@ -112,7 +125,7 @@ async function makeQueryContext(settings: Settings) {
 
   console.log(context);
 
-  if (!settings.languageFeaturesEnabled) return context;
+  if (!settings.languageFeaturesEnabled) return context.trim();
 
   let cachedContext = getFromCache(context);
 
@@ -123,7 +136,7 @@ async function makeQueryContext(settings: Settings) {
 
   console.log(`Updated: ${cachedContext}`);
 
-  return cachedContext;
+  return cachedContext.trim();
 }
 
 function getFromCache(context: string): string | undefined {

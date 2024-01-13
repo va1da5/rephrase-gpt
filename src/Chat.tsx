@@ -34,7 +34,7 @@ export default function Chat() {
       {
         role: "assistant",
         content:
-          settings?.apiKey && !settings?.apiKey.length
+          settings?.apiKey != undefined && !settings?.apiKey.length
             ? greets.missingApiKey
             : greets.welcome,
       },

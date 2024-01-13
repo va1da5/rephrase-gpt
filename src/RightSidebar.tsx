@@ -13,7 +13,7 @@ export default function RightSidebar() {
   const { settings, dispatch } = useSettingsContext();
 
   return (
-    <div className="mt-5 flex h-full flex-col px-4">
+    <div className="mt-8 flex h-full flex-col px-4">
       <div className="flex w-full flex-col gap-5">
         <ApiKey />
 
@@ -90,6 +90,9 @@ export default function RightSidebar() {
             }}
           />
 
+          <div className="text-sm text-gray-400">
+            Temperature affects output randomness
+          </div>
           <PrivacyFilter />
         </div>
       </div>

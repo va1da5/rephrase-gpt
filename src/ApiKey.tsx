@@ -47,7 +47,7 @@ export default function ApiKey({}: Props) {
           <span
             className={cn(
               "absolute left-5 me-3 flex h-3 w-3 rounded-full",
-              settings.apiKey.length
+              settings.apiKey?.length
                 ? "bg-green-600"
                 : "animate-pulse bg-red-500 shadow-sm shadow-red-800 ease-in-out"
             )}
