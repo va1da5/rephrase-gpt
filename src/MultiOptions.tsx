@@ -74,6 +74,7 @@ export default function MultiOptions({
             ),
           noOptionsMessage: () => noOptionsMessageStyles,
         }}
+        /* @ts-ignore */
         components={{ DropdownIndicator, ClearIndicator, MultiValueRemove }}
       />
     </div>
