@@ -59,10 +59,12 @@ export default function Chat() {
   }
 
   async function handleSubmit() {
+    let prompt = getPromptValue();
+
+    if (!prompt.trim().length) return;
+
     setLoading(true);
     scrollToView();
-
-    let prompt = getPromptValue();
 
     setMessages((current) => [...current, { role: "user", content: prompt }]);
 
@@ -95,7 +97,7 @@ export default function Chat() {
 
   return (
     <div className=" col-span-8 grid h-dvh grid-cols-1 grid-rows-[minmax(0,_1fr)_auto]">
-      <ScrollArea className="h-full overflow-y-auto p-10">
+      <ScrollArea className="h-full overflow-y-auto px-10 pt-10">
         {messages
           .filter((message) => message.content && message.content?.length > 0)
           .map((message, index) => (
@@ -130,7 +132,7 @@ export default function Chat() {
       <div>
         <form
           ref={formRef}
-          className="flex items-end gap-3 p-10"
+          className="flex items-end gap-3 px-10 pb-10 pt-7"
           onSubmit={(event) => {
             event.preventDefault();
             handleSubmit();
@@ -149,11 +151,13 @@ export default function Chat() {
                 handleSubmit();
               }
             }}
+            className="shadow-md"
           />
           <Button
             type="submit"
             disabled={loading}
-            className={cn(loading && "animate-pulse")}
+            variant={"default"}
+            className={cn(loading && "animate-pulse", "bg-zinc-700")}
           >
             Submit
           </Button>

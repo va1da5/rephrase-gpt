@@ -2,6 +2,8 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { Settings } from "./state/Settings";
 import { HumanMessage, SystemMessage } from "langchain/schema";
 import {
+  adjectives,
+  fruits,
   localStorageQueryContextCacheKeyName,
   queryContextTuningInstruction,
 } from "./values";
@@ -44,11 +46,22 @@ export async function inference({
     callbacks: [{ handleLLMNewToken: streamHandler }],
   });
 
+  let mapping: PrivacyMapping = [];
+
+  if (settings.privacyFilterEnabled) {
+    const sanitized = privacyEncode(prompt, settings);
+    prompt = sanitized.prompt;
+    mapping = sanitized.mapping;
+  }
+
   try {
     const response = await chat.call([
-      new SystemMessage((await makeQueryContext(settings)) as string), // SystemMessage
+      new SystemMessage((await makeQueryContext(settings)) as string),
       new HumanMessage(prompt),
     ]);
+
+    if (settings.privacyFilterEnabled)
+      return privacyDecode(response.content as string, mapping);
 
     return response.content as string;
   } catch (error: any) {
@@ -95,9 +108,11 @@ async function makeQueryContext(settings: Settings) {
   if (settings.languageFeaturesEnabled)
     context = makeLanguageQueryContext(settings);
 
-  if (settings.markdownOutput) context += " Format content in Markdown.";
+  if (settings.markdownOutput) context += " Format output using Markdown.";
 
   console.log(context);
+
+  if (!settings.languageFeaturesEnabled) return context;
 
   let cachedContext = getFromCache(context);
 
@@ -138,4 +153,34 @@ function setCache(context: string, finalContext: string) {
     localStorageQueryContextCacheKeyName,
     JSON.stringify(cache)
   );
+}
+
+type PrivacyMapping = {
+  keyword: string;
+  replace: string;
+}[];
+
+function privacyEncode(prompt: string, settings: Settings) {
+  const mapping = settings.privacyKeywords.map((keyword) => ({
+    keyword,
+    replace: `${getRandom(adjectives)}${getRandom(fruits)}`,
+  }));
+
+  for (const item of mapping) {
+    prompt = prompt.replace(new RegExp(item.keyword, "g"), item.replace);
+  }
+
+  return { prompt, mapping };
+}
+
+function privacyDecode(response: string, mapping: PrivacyMapping) {
+  for (const item of mapping) {
+    response = response.replace(new RegExp(item.replace, "g"), item.keyword);
+  }
+
+  return response;
+}
+
+function getRandom<T>(array: T[]): T {
+  return array[Math.floor(Math.random() * array.length)];
 }

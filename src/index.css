@@ -94,3 +94,7 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-zinc-600;
 }
+
+* {
+  min-width: 0;
+}
