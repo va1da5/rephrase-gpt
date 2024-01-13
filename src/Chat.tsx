@@ -141,6 +141,7 @@ export default function Chat() {
           <Textarea
             placeholder="Your query goes here..."
             name="prompt"
+            maxRows={10}
             onKeyDownCapture={(event) => {
               if (event.code != "Enter" || event.shiftKey) return;
 

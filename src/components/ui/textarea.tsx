@@ -2,28 +2,22 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+import TextareaAutosize, {
+  TextareaAutosizeProps,
+} from "react-textarea-autosize";
+
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaAutosizeProps>(
   ({ className, ...props }, ref) => {
-    const [rows, setRows] = React.useState(1);
-    const maxRows = 10;
     return (
-      <textarea
+      <TextareaAutosize
         className={cn(
           "flex min-h-10 w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
-        rows={rows}
         ref={ref}
-        onChange={(event) => {
-          const lineCount = event.target.value.split("\n").length;
-          if (lineCount < maxRows) {
-            setRows(lineCount);
-          }
-          if (props.onChange) props.onChange(event);
-        }}
         {...props}
       />
     );
