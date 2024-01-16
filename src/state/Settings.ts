@@ -9,7 +9,7 @@ export interface Settings {
   model: string;
   maxTokens: number;
   temperature: number;
-  apiKey?: string;
+  apiKey: string;
   aiConsultantId: number;
   markdownOutput: boolean;
   languageFeaturesEnabled: boolean;
@@ -21,7 +21,7 @@ export interface Settings {
   usePassiveVoice: boolean;
   privacyFilterEnabled: boolean;
   privacyKeywords: string[];
-  configurationPresents?: {
+  configurationPresents: {
     label: string;
     value: string;
   }[];

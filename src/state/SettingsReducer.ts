@@ -94,10 +94,12 @@ export const settingsReducer = (
       return { ...state, privacyKeywords: keywords, privacyFilterEnabled };
 
     case SettingsReducerAction.ADD_CONFIGURATION_PRESETS:
-      const stateClone = { ...state };
+      const stateClone: Partial<Settings> = { ...state };
 
       delete stateClone.configurationPresents;
       delete stateClone.apiKey;
+      delete stateClone.privacyKeywords;
+      delete stateClone.privacyFilterEnabled;
 
       const newPreset = {
         label: action.payload as string,
