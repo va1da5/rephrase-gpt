@@ -40,6 +40,19 @@ export default function LeftSidebar({}: SidebarProps) {
         />
       </div>
 
+      <Options
+        disabled={!settings.languageFeaturesEnabled}
+        label="Action"
+        options={languageActions}
+        value={settings.action}
+        onValueChange={(value) => {
+          dispatch({
+            type: SettingsReducerAction.SET_ACTION,
+            payload: value,
+          });
+        }}
+      />
+
       <MultiOptions
         disabled={!settings.languageFeaturesEnabled}
         label="Language Style"
@@ -87,19 +100,6 @@ export default function LeftSidebar({}: SidebarProps) {
         onValueChange={(value) => {
           dispatch({
             type: SettingsReducerAction.SET_FORMAT,
-            payload: value,
-          });
-        }}
-      />
-
-      <Options
-        disabled={!settings.languageFeaturesEnabled}
-        label="Action"
-        options={languageActions}
-        value={settings.action}
-        onValueChange={(value) => {
-          dispatch({
-            type: SettingsReducerAction.SET_ACTION,
             payload: value,
           });
         }}
