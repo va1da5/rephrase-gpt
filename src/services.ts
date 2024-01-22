@@ -180,7 +180,10 @@ function privacyEncode(prompt: string, settings: Settings) {
   }));
 
   for (const item of mapping) {
-    prompt = prompt.replace(new RegExp(item.keyword, "g"), item.replace);
+    prompt = prompt.replace(
+      new RegExp(`\b${item.keyword}\b`, "g"),
+      item.replace
+    );
   }
 
   return { prompt, mapping };
