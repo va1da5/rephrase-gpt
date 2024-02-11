@@ -13,14 +13,39 @@ export const localStorageSettingsKeyName = "___settings";
 export const localStorageQueryContextCacheKeyName = "___queryContextCache";
 
 export const gptModels = [
-  "gpt-3.5-turbo",
-  "gpt-3.5-turbo-0613",
-  "gpt-3.5-turbo-16k",
-  "gpt-3.5-turbo-16k-0613",
-  "gpt-4",
-  "gpt-4-0613",
-  "gpt-4-32k",
-  "gpt-4-32k-0613",
+  {
+    label: "gpt-3.5-turbo-0125 IN:$0.0005 OUT:$0.0015",
+    value: "gpt-3.5-turbo-0125",
+  },
+  {
+    label: "gpt-3.5-turbo-instruct IN:$0.0015 OUT:$0.0020",
+    value: "gpt-3.5-turbo-instruct",
+  },
+  {
+    label: "gpt-3.5-turbo-1106 IN:$0.0010 OUT:$0.0020",
+    value: "gpt-3.5-turbo-1106",
+  },
+  { label: "gpt-3.5-turbo IN:$0.0015 OUT:$0.0020", value: "gpt-3.5-turbo" },
+  {
+    label: "gpt-3.5-turbo-0613 IN:$0.0015 OUT:$0.0020",
+    value: "gpt-3.5-turbo-0613",
+  },
+
+  {
+    label: "gpt-4-turbo-preview IN:$0.0100 OUT:$0.03",
+    value: "gpt-4-turbo-preview",
+  },
+  {
+    label: "gpt-4-0125-preview IN:$0.0100 OUT:$0.03",
+    value: "gpt-4-0125-preview",
+  },
+  {
+    label: "gpt-4-1106-preview IN:$0.0100 OUT:$0.03",
+    value: "gpt-4-1106-preview",
+  },
+
+  { label: "gpt-4 IN:$0.0300 OUT:$0.0600", value: "gpt-4" },
+  { label: "gpt-4-32k IN:$0.0600 OUT:$0.1200", value: "gpt-4-32k" },
 ];
 
 export const languageStyles = [
@@ -114,6 +139,7 @@ export const outputFormats = [
     label: "Corporate",
     value: "Answer using corporate jargon where appropriate",
   },
+  { label: "Lists of Facts", value: "Provide as a list of facts" },
 ];
 
 export const languageActions = [

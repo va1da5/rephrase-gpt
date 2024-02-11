@@ -28,7 +28,7 @@ export interface Settings {
 }
 
 export const defaultSettings: Settings = {
-  model: gptModels[0],
+  model: gptModels[0].value,
   maxTokens: 3000,
   temperature: 0.3,
   apiKey: "",

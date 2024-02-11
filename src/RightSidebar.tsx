@@ -19,7 +19,7 @@ export default function RightSidebar() {
 
         <Options
           label="GPT Model"
-          options={gptModels.map((value) => ({ label: value, value }))}
+          options={gptModels}
           value={settings.model}
           onValueChange={(value) => {
             dispatch({
