@@ -14,7 +14,7 @@ export const localStorageQueryContextCacheKeyName = "___queryContextCache";
 
 export const gptModels = [
   {
-    label: "gpt-3.5-turbo-0125 IN:$0.0005 OUT:$0.0015",
+    label: "🔥gpt-3.5-turbo-0125 IN:$0.0005 OUT:$0.0015",
     value: "gpt-3.5-turbo-0125",
   },
   {
@@ -34,6 +34,10 @@ export const gptModels = [
   {
     label: "gpt-4-turbo-preview IN:$0.0100 OUT:$0.03",
     value: "gpt-4-turbo-preview",
+  },
+  {
+    label: "🔥gpt-4-turbo-2024-04-09 IN:$0.0100 OUT:$0.03",
+    value: "gpt-4-turbo-2024-04-09",
   },
   {
     label: "gpt-4-0125-preview IN:$0.0100 OUT:$0.03",
