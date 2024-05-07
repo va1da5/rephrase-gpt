@@ -15,6 +15,10 @@ const Markdown = ({ children }: { children: string }) => {
           const match = /language-(\w+)/.exec(className || "");
           return !inline ? (
             <SyntaxHighlighter
+              lineProps={{
+                style: { wordBreak: "break-all", whiteSpace: "pre-wrap" },
+              }}
+              wrapLines={true}
               children={String(children).replace(/\n$/, "")}
               style={darkCodeStyle as any}
               language={match ? match[1] : "text"}
