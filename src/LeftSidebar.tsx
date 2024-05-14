@@ -13,6 +13,7 @@ import {
   pretendCharacters,
 } from "./values";
 import { Switch } from "./components/ui/switch";
+import Shortkeys from "./Shortkeys";
 
 type SidebarProps = {};
 
@@ -119,6 +120,8 @@ export default function LeftSidebar({}: SidebarProps) {
       <div className="mt-2">
         <ConfigurationPresets />
       </div>
+
+      <Shortkeys />
     </div>
   );
 }
