@@ -25,7 +25,9 @@ export default function PrivacyFilter({}: Props) {
   function addKeywords(input: string) {
     dispatch({
       type: SettingsReducerAction.SET_PRIVACY_KEYWORDS,
-      payload: [...parseKeywords(input), ...settings.privacyKeywords],
+      payload: Array.from(
+        new Set([...parseKeywords(input), ...settings.privacyKeywords])
+      ),
     });
   }
 
