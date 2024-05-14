@@ -30,13 +30,16 @@ export const gptModels = [
     label: "gpt-3.5-turbo-0613 IN:$0.0015 OUT:$0.0020",
     value: "gpt-3.5-turbo-0613",
   },
-
+  {
+    label: "🔥 gpt-4o IN:$0.005 OUT:$0.015",
+    value: "gpt-4o",
+  },
   {
     label: "gpt-4-turbo-preview IN:$0.0100 OUT:$0.03",
     value: "gpt-4-turbo-preview",
   },
   {
-    label: "🔥gpt-4-turbo-2024-04-09 IN:$0.0100 OUT:$0.03",
+    label: "gpt-4-turbo-2024-04-09 IN:$0.0100 OUT:$0.03",
     value: "gpt-4-turbo-2024-04-09",
   },
   {
