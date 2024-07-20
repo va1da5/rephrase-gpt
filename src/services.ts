@@ -21,7 +21,7 @@ export async function fixQueryContext(settings: Settings, context: string) {
     openAIApiKey: settings?.apiKey,
     temperature: 0.2,
     maxTokens: 1024,
-    modelName: "gpt-3.5-turbo-0125",
+    modelName: "gpt-4o-mini",
     streaming: false,
   });
 

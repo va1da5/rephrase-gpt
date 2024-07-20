@@ -14,24 +14,11 @@ export const localStorageQueryContextCacheKeyName = "___queryContextCache";
 
 export const gptModels = [
   {
-    label: "🔥gpt-3.5-turbo-0125 IN:$0.0005 OUT:$0.0015",
-    value: "gpt-3.5-turbo-0125",
+    label: "🔥 gpt-4o-mini IN:$0.00015 OUT:$0.0006",
+    value: "gpt-4o-mini",
   },
   {
-    label: "gpt-3.5-turbo-instruct IN:$0.0015 OUT:$0.0020",
-    value: "gpt-3.5-turbo-instruct",
-  },
-  {
-    label: "gpt-3.5-turbo-1106 IN:$0.0010 OUT:$0.0020",
-    value: "gpt-3.5-turbo-1106",
-  },
-  { label: "gpt-3.5-turbo IN:$0.0015 OUT:$0.0020", value: "gpt-3.5-turbo" },
-  {
-    label: "gpt-3.5-turbo-0613 IN:$0.0015 OUT:$0.0020",
-    value: "gpt-3.5-turbo-0613",
-  },
-  {
-    label: "🔥 gpt-4o IN:$0.005 OUT:$0.015",
+    label: "gpt-4o IN:$0.005 OUT:$0.015",
     value: "gpt-4o",
   },
   {
@@ -53,6 +40,23 @@ export const gptModels = [
 
   { label: "gpt-4 IN:$0.0300 OUT:$0.0600", value: "gpt-4" },
   { label: "gpt-4-32k IN:$0.0600 OUT:$0.1200", value: "gpt-4-32k" },
+  {
+    label: "🔥gpt-3.5-turbo-0125 IN:$0.0005 OUT:$0.0015",
+    value: "gpt-3.5-turbo-0125",
+  },
+  {
+    label: "gpt-3.5-turbo-instruct IN:$0.0015 OUT:$0.0020",
+    value: "gpt-3.5-turbo-instruct",
+  },
+  {
+    label: "gpt-3.5-turbo-1106 IN:$0.0010 OUT:$0.0020",
+    value: "gpt-3.5-turbo-1106",
+  },
+  { label: "gpt-3.5-turbo IN:$0.0015 OUT:$0.0020", value: "gpt-3.5-turbo" },
+  {
+    label: "gpt-3.5-turbo-0613 IN:$0.0015 OUT:$0.0020",
+    value: "gpt-3.5-turbo-0613",
+  },
 ];
 
 export const languageStyles = [
