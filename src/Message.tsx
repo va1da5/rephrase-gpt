@@ -20,7 +20,7 @@ export default function Message({ message }: Props) {
         <div className="w-full">
           <div
             className={cn(
-              "prose prose-lg prose-slate max-w-full transition-opacity duration-100 dark:prose-invert hover:opacity-100  prose-pre:bg-[#282c34]",
+              "prose prose-sm prose-slate max-w-full transition-opacity duration-100 dark:prose-invert sm:prose-lg hover:opacity-100  prose-pre:bg-[#282c34]",
               message.role == "user" && "opacity-50 "
             )}
           >

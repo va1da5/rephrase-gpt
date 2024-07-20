@@ -28,13 +28,16 @@ export default function App() {
     <>
       <SettingsContext.Provider value={{ settings, dispatch }}>
         <div className="grid h-dvh grid-cols-12">
-          <ScrollArea className="col-span-2 h-dvh  bg-zinc-800">
+          <ScrollArea className="col-span-5 h-dvh bg-zinc-800 sm:col-span-5 lg:col-span-3 2xl:col-span-2">
             <Sidebar />
+            <div className="mb-12 w-full sm:block lg:hidden">
+              <RightSidebar />
+            </div>
           </ScrollArea>
 
-          <Chat />
+          <Chat className="col-span-7 grid h-dvh grid-cols-1 grid-rows-[minmax(0,_1fr)_auto] lg:col-span-7 2xl:col-span-8" />
 
-          <ScrollArea className="col-span-2 h-dvh overflow-y-auto bg-zinc-800">
+          <ScrollArea className="hidden h-dvh overflow-y-auto bg-zinc-800 sm:col-span-4 sm:hidden lg:col-span-2 lg:block">
             <RightSidebar />
           </ScrollArea>
         </div>

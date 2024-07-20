@@ -8,17 +8,15 @@ import { greets } from "./values";
 import Message, { MemoizedMessage } from "./Message";
 import { inference } from "./services";
 import { cn } from "./lib/utils";
-import { registerHotKey } from "./utils";
+import { registerHotKey, setPromptInput } from "./utils";
 
-export default function Chat() {
+export default function Chat({ className }: { className: string }) {
   registerHotKey("ctrl+l", () => setMessages([]));
   registerHotKey("ctrl+enter", () => {
     handleSubmit();
   });
   registerHotKey("ctrl+delete", () => {
-    if (formRef.current)
-      (formRef.current.elements.namedItem("prompt") as HTMLInputElement).value =
-        "";
+    setPromptInput(formRef, "");
   });
 
   const { settings } = useSettingsContext();
@@ -67,6 +65,7 @@ export default function Chat() {
     scrollToView();
 
     setMessages((current) => [...current, { role: "user", content: prompt }]);
+    setPromptInput(formRef, "");
 
     const response = await inference({
       settings,
@@ -87,6 +86,14 @@ export default function Chat() {
     });
   }
 
+  function loadLastPrompt() {
+    if (!messages) return;
+    const user = messages.filter((mgs) => mgs.role == "user");
+    if (user.length) {
+      setPromptInput(formRef, user.at(-1)?.content as string);
+    }
+  }
+
   function getPromptValue(): string {
     if (formRef.current)
       return (formRef.current.elements.namedItem("prompt") as HTMLInputElement)
@@ -96,8 +103,8 @@ export default function Chat() {
   }
 
   return (
-    <div className=" col-span-8 grid h-dvh grid-cols-1 grid-rows-[minmax(0,_1fr)_auto]">
-      <ScrollArea className="h-full overflow-y-auto px-10 pt-10">
+    <div className={className}>
+      <ScrollArea className="h-full overflow-y-auto px-2 pt-2 sm:px-10 sm:pt-10">
         {messages
           .filter((message) => message.content && message.content?.length > 0)
           .map((message, index) => (
@@ -143,13 +150,25 @@ export default function Chat() {
             name="prompt"
             maxRows={10}
             onKeyDownCapture={(event) => {
-              if (event.code != "Enter" || event.shiftKey) return;
+              if (
+                (event.code != "Enter" || event.shiftKey) &&
+                event.key != "ArrowUp"
+              )
+                return;
 
               const prompt = getPromptValue();
 
-              if (prompt.length && prompt.split("\n").length < 2) {
+              if (
+                prompt.length &&
+                prompt.split("\n").length < 2 &&
+                event.code == "Enter"
+              ) {
                 event.preventDefault();
                 handleSubmit();
+              }
+
+              if (!prompt.length && event.key == "ArrowUp") {
+                loadLastPrompt();
               }
             }}
             className="shadow-md"
