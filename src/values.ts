@@ -7,7 +7,7 @@ export const greets = {
 export const queryContextTuningInstruction =
   "Fix grammar for the following chat prompt context. Write in a passive voice meant for instructions in a concise manner. Provide only fixed text.";
 
-export const maxTokens = 32768;
+export const maxTokens = 128000;
 
 export const localStorageSettingsKeyName = "___settings";
 export const localStorageQueryContextCacheKeyName = "___queryContextCache";
@@ -163,6 +163,11 @@ export const languageActions = [
   { label: "Subject", value: "Create an email subject from " },
   { label: "Summarize", value: "Summarize" },
   { label: "Title", value: "Create a title for" },
+  { label: "List of Facts", value: "Identify and list key facts from " },
+  {
+    label: "Create Meme",
+    value: "Create a text for a meme with description for images for ",
+  },
 ];
 
 export const pretendCharacters = [
