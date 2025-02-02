@@ -42,7 +42,7 @@ export default function RightSidebar() {
         />
 
         <div className="grid w-full max-w-sm items-center gap-1.5 text-white">
-          <Label htmlFor="max-tokens">Max Tokens</Label>
+          <Label htmlFor="max-tokens">Max Output Tokens</Label>
           <Input
             value={settings.maxTokens}
             onChange={(event) => {
